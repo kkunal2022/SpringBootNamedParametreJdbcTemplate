@@ -1,0 +1,103 @@
+curl --location 'http://localhost:8080/api/stock-requests/employees' \
+--header 'Content-Type: application/json' \
+--data '{
+    "dateOfConfirmation": "17/11/2023 9:50:58 PM",
+    "dateOfPreviousIssue": "17/11/2023 9:50:58 PM",
+    "departmentAuthorisedBy": "",
+    "departmentCode": 12,
+    "departmentConfirmedBy": "",
+    "departmentInitiatedBy": "",
+    "departmentReceivedBy": "",
+    "departmentRequesting": "Employee",
+    "designatedPersonApprovalName": "Kunal",
+    "id": 4,
+    "itemDescription": "Test",
+    "itemNo": 1,
+    "itemReferenceNo": "Test",
+    "password": "manager",
+    "previousIssueQuantity": 45,
+    "purposeOfIssue": "Employee",
+    "quantityRequested": 12,
+    "role": "ROLE_MANAGER",
+    "signature": "KKKKK",
+    "stockDate": "17/11/2023 9:50:58 PM",
+    "stockRequestDate": "17/11/2023 9:50:58 PM",
+    "username": "manager"
+}'
+
+
+curl --location 'http://localhost:8080/api/stock-requests/1' \
+--header 'Content-Type: application/json' \
+--data '{
+    "Date": "",
+    "employee": {
+        "dateOfConfirmation": "",
+        "dateOfPreviousIssue": "",
+        "departmentAuthorisedBy": "",
+        "departmentCode": 1,
+        "departmentConfirmedBy": "KK",
+        "departmentInitiatedBy": "Manager",
+        "departmentReceivedBy": "ADMIN",
+        "departmentRequesting": "EMPLOYEE",
+        "designatedPersonApprovalName": "KK",
+        "id": 4,
+        "itemDescription": "Test",
+        "itemNo": 5,
+        "itemReferenceNo": "Test",
+        "password": "manager",
+        "previousIssueQuantity": 11,
+        "purposeOfIssue": "Testing",
+        "quantityRequested": 21,
+        "role": "ROLE_MANAGER",
+        "signature": "KK",
+        "stockDate": "",
+        "stockRequestDate": "",
+        "stockRequestList": [],
+        "username": "manager"
+    },
+    "endDate": "28/09/2013",
+    "id": "4",
+    "startDate": "28/09/2013",
+    "status": "Pending"
+}'
+
+
+
+curl --location --request GET 'http://localhost:8080/api/employees' \
+--header 'Content-Type: application/json' \
+--data '{
+    "dateOfConfirmation": "",
+    "dateOfPreviousIssue": "",
+    "departmentAuthorisedBy": "",
+    "departmentCode": 1,
+    "departmentConfirmedBy": "",
+    "departmentInitiatedBy": "",
+    "departmentReceivedBy": "",
+    "departmentRequesting": "",
+    "designatedPersonApprovalName": "",
+    "id": 2,
+    "itemDescription": "Test",
+    "itemNo": 21,
+    "itemReferenceNo": "",
+    "leaveRequests": [
+        {
+            "approved": "Pending",
+            "employeeId": 2,
+            "endDate": "",
+            "id": 2,
+            "reason": "Test Approval",
+            "startDate": ""
+        }
+    ],
+    "password": "manager",
+    "previousIssueQuantity": 31,
+    "purposeOfIssue": "Kunal",
+    "quantityRequested": 19,
+    "role": "ROLE_MANAGER",
+    "signature": "KKKK",
+    "stockDate": "",
+    "stockRequestDate": "",
+    "username": "manager"
+}'
+
+
