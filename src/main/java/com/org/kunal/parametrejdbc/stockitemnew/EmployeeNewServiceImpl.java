@@ -5,12 +5,11 @@
  */
 package com.org.kunal.parametrejdbc.stockitemnew;
 
-import java.util.List;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 /**
  * kunal SpringBootNamedParametreJdbcTemplate 2023
@@ -18,37 +17,37 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class EmployeeNewServiceImpl implements EmployeeNewService {
-	private EmployeeDao employeeDao;
+    private final EmployeeDao employeeDao;
 
-	@Autowired
-	public EmployeeNewServiceImpl(EmployeeDao employeeDao) {
-		this.employeeDao = employeeDao;
-	}
+    @Autowired
+    public EmployeeNewServiceImpl(EmployeeDao employeeDao) {
+        this.employeeDao = employeeDao;
+    }
 
-	@Override
-	public void saveEmployee(Employee employee) {
-		log.info("saveEmployee service impl ---- '{}'" , employee);
-		employeeDao.save(employee);
-	}
+    @Override
+    public void saveEmployee(Employee employee) {
+        log.info("saveEmployee service impl ---- '{}'", employee);
+        employeeDao.save(employee);
+    }
 
-	@Override
-	public void updateEmployee(Employee employee) {
-		employeeDao.update(employee);
-	}
+    @Override
+    public void updateEmployee(Employee employee) {
+        employeeDao.update(employee);
+    }
 
-	@Override
-	public void deleteEmployee(int id) {
-		employeeDao.delete(id);
-	}
+    @Override
+    public void deleteEmployee(int id) {
+        employeeDao.delete(id);
+    }
 
-	@Override
-	public Employee getEmployeeById(int id) {
-		return employeeDao.getById(id);
-	}
+    @Override
+    public Employee getEmployeeById(int id) {
+        return employeeDao.getById(id);
+    }
 
-	@Override
-	public List<Employee> getAllEmployees() {
-		return employeeDao.getAll();
-	}
+    @Override
+    public List<Employee> getAllEmployees() {
+        return employeeDao.getAll();
+    }
 
 }
