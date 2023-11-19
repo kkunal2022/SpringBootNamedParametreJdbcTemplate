@@ -12,8 +12,8 @@ import com.github.victools.jsonschema.generator.SchemaGenerator;
 import com.github.victools.jsonschema.generator.SchemaGeneratorConfig;
 import com.github.victools.jsonschema.generator.SchemaVersion;
 import com.org.kunal.parametrejdbc.purchaserequest.PurchaseRequestEntity;
-import com.org.kunal.parametrejdbc.stockitem.Employee;
 import com.org.kunal.parametrejdbc.stockitem.LeaveRequest;
+import com.org.kunal.parametrejdbc.stockitemnew.Employee;
 
 /**
  * Kumar.Kunal

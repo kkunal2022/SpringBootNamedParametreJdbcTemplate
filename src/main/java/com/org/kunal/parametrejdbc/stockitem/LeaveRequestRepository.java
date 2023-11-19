@@ -11,6 +11,8 @@ import java.util.List;
  * kunal parametrejdbc 2023
  */
 public interface LeaveRequestRepository {
+	
+	//void saveLeaveRequest(LeaveRequest leaveRequest);
 
 	List<LeaveRequest> getLeaveRequestsByEmployeeId(Long employeeId);
 

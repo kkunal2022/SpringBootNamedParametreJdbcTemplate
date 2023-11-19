@@ -83,6 +83,15 @@
     	approved BOOLEAN,
     	FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
     );
+    
+    CREATE TABLE leave_request (
+	  id INT PRIMARY KEY,
+	  employee_id INT,
+	  start_date DATE,
+	  end_date DATE,
+	  status VARCHAR(20),
+	  FOREIGN KEY (employee_id) REFERENCES employees(id)
+	);
 
     --insert into employees (id ,username,password, department_requesting, stock_request_date ,department_code ,purpose_of_issue ,stock_date ,item_no ,item_reference_no ,
 	--item_description ,date_of_previous_issue ,previous_issue_quantity,quantity_requested ,department_initiated_by,department_authorised_by ,

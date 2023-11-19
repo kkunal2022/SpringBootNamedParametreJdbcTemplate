@@ -1,9 +1,9 @@
 /**
  * kunal
- * parametrejdbc
- * com.org.kunal.parametrejdbc.stockitem
+ * SpringBootNamedParametreJdbcTemplate
+ * com.org.kunal.parametrejdbc.stockitemnew
  */
-package com.org.kunal.parametrejdbc.stockitem;
+package com.org.kunal.parametrejdbc.stockitemnew;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -11,8 +11,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,9 +24,7 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * @author Kumar.Kunal 
- * parametrejdbc 
- * 2023
+ * kunal SpringBootNamedParametreJdbcTemplate 2023
  */
 @Data
 @Builder
@@ -40,18 +37,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LeaveRequest {
 
-	private Long id;
-	private Long employeeId;
-	
-	//@ManyToOne
-    //@JoinColumn(name = "employee_id")
-	//private Employee employee;
-	
-	private String reason;
+	@Id
+	private int id;
+	private Employee employee;
 	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
 	private LocalDate startDate;
 	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
 	private LocalDate endDate;
-	private boolean approved;
+	private String status;
 
 }
