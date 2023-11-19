@@ -13,10 +13,13 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.org.kunal.parametrejdbc.stockitemnew.LeaveRequest;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * kunal SpringBootNamedParametreJdbcTemplate 2023
  */
 @Repository
+@Slf4j
 public class EmployeeDaoImpl implements EmployeeDao {
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -27,7 +30,14 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public void save(com.org.kunal.parametrejdbc.stockitemnew.Employee employee) {
-		String sql = "INSERT INTO employees (id, name, email) VALUES (:id, :name, :email)";
+		log.info("saveEmployee dao impl ---- '{}'" , employee);
+		String sql = "INSERT INTO employees (id ,username,password, department_requesting, stock_request_date ,department_code ,purpose_of_issue ,stock_date ," +
+                "item_no ,item_reference_no , item_description ,date_of_previous_issue ,previous_issue_quantity,quantity_requested ,department_initiated_by," +
+                "department_authorised_by , department_confirmed_by,department_received_by,designated_person_approval_name ,signature ,date_of_confirmation ,role )  " +
+                "VALUES (:id, :username, :password, :department_requesting, :stock_request_date, :department_code, :purpose_of_issue, :stock_date, :item_no, " +
+                ":item_reference_no," +
+                ":item_description, :date_of_previous_issue, :previous_issue_quantity, :quantity_requested, :department_initiated_by, :department_authorised_by, " +
+                ":department_confirmed_by, :department_received_by, :designated_person_approval_name, :signature, :date_of_confirmation, :role)";
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id", employee.getId());
 		params.addValue("username", employee.getUsername());
@@ -54,6 +64,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		jdbcTemplate.update(sql, params);
 
 		for (LeaveRequest leaveRequest : employee.getLeaveRequests()) {
+			log.info("saveEmployee dao impl in Leave Request for loop  ---- '{}'" , employee);
 			saveLeaveRequest(leaveRequest, employee.getId());
 		}
 	}
@@ -100,6 +111,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 
 	private void saveLeaveRequest(LeaveRequest leaveRequest, int employeeId) {
+		log.info("saveEmployee saveLeaveRequest dao impl ---- '{}'" , employeeId);
 		String sql = "INSERT INTO leave_request (id, employee_id, start_date, end_date, status) "
 				+ "VALUES (:id, :employeeId, :startDate, :endDate, :status)";
 		MapSqlParameterSource params = new MapSqlParameterSource();
@@ -108,6 +120,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		params.addValue("startDate", leaveRequest.getStartDate());
 		params.addValue("endDate", leaveRequest.getEndDate());
 		params.addValue("status", leaveRequest.getStatus());
+		log.info("After saveEmployee saveLeaveRequest dao impl ---- '{}'" , params);
 		jdbcTemplate.update(sql, params);
 	}
 

@@ -101,3 +101,37 @@ curl --location --request GET 'http://localhost:8080/api/employees' \
 }'
 
 
+curl --location 'http://localhost:8080/api/kunal/employees' \
+--header 'Content-Type: application/json' \
+--data '{
+    "id": 1,
+    "dateOfConfirmation": "19/11/2023",
+    "dateOfPreviousIssue": "19/11/2023",
+    "departmentAuthorisedBy": "Kumar Kunal Information Technology",
+    "departmentCode": 11,
+    "departmentConfirmedBy": "Kunal",
+    "departmentInitiatedBy": "Information Technology",
+    "departmentReceivedBy": "Kunal HRMS",
+    "departmentRequesting": "Finance",
+    "designatedPersonApprovalName": "KK",
+    "itemDescription": "Test OneToMany",
+    "itemNo": 21,
+    "itemReferenceNo": "Testing NamedParametreJdbcTemplate",
+    "leaveRequests": [
+        {
+            "endDate": "30/11/2023",
+            "id": 1,
+            "startDate": "20/11/2023",
+            "status": "Pending"
+        }
+    ],
+    "password": "manager",
+    "previousIssueQuantity": 12,
+    "purposeOfIssue": "Test KK",
+    "quantityRequested": 120,
+    "role": "ROLE_MANAGER",
+    "signature": "KKKKKKK",
+    "stockDate": "20/11/2023",
+    "stockRequestDate": "20/11/2023",
+    "username": "manager"
+}'

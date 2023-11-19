@@ -10,10 +10,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * kunal SpringBootNamedParametreJdbcTemplate 2023
  */
 @Service
+@Slf4j
 public class EmployeeNewServiceImpl implements EmployeeNewService {
 	private EmployeeDao employeeDao;
 
@@ -24,6 +27,7 @@ public class EmployeeNewServiceImpl implements EmployeeNewService {
 
 	@Override
 	public void saveEmployee(Employee employee) {
+		log.info("saveEmployee service impl ---- '{}'" , employee);
 		employeeDao.save(employee);
 	}
 

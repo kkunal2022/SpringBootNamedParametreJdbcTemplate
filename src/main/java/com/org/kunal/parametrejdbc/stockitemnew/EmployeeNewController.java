@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * kunal SpringBootNamedParametreJdbcTemplate 2023
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/kunal")
+@Slf4j
 public class EmployeeNewController {
 
 	private EmployeeNewService employeeService;
@@ -37,6 +39,7 @@ public class EmployeeNewController {
 
 	@PostMapping(value = "/employees", consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE)
 	public void saveEmployee(@RequestBody Employee employee) {
+		log.info("saveEmployee controller ---- '{}'" , employee);
 		employeeService.saveEmployee(employee);
 	}
 
