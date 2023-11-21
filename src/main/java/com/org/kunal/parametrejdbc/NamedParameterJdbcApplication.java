@@ -5,12 +5,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 /**
  * Kumar.Kunal
+ * SpringBootNamedParameterJdbcTemplate
+ * 2023
  */
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-public class ParametreJdbcApplication {
+public class NamedParameterJdbcApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ParametreJdbcApplication.class, args);
+		SpringApplication.run(NamedParameterJdbcApplication.class, args);
 	}
 
 }

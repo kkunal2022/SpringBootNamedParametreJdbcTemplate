@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface LeaveRequestRepository {
 	
-	//void saveLeaveRequest(LeaveRequest leaveRequest);
+	//void saveLeaveRequest(StockRequest leaveRequest);
 
 	List<LeaveRequest> getLeaveRequestsByEmployeeId(Long employeeId);
 

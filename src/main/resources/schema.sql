@@ -45,9 +45,8 @@
 	);
 
 	-- Stock Requisition Tables Creation with Foreign Relations & Normalization Starts Here
-	
-	DROP TABLE IF EXISTS employees;
-	CREATE TABLE IF NOT EXISTS employees(
+	DROP TABLE IF EXISTS stocks;
+	CREATE TABLE IF NOT EXISTS stocks(
         id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(100),
         password VARCHAR(100),
@@ -73,30 +72,30 @@
         role VARCHAR(20)
 	);
 
-    DROP TABLE IF EXISTS leave_requests;
-	CREATE TABLE IF NOT EXISTS leave_requests (
+    DROP TABLE IF EXISTS stock_requests;
+	CREATE TABLE IF NOT EXISTS stock_requests (
         id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    	employee_id INT,
+    	stock_id INT,
     	reason VARCHAR(255),
     	start_date DATE,
     	end_date DATE,
     	approved BOOLEAN,
-    	FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
+    	FOREIGN KEY (stock_id) REFERENCES stocks(id) ON DELETE CASCADE
     );
     
-    CREATE TABLE leave_request (
+    CREATE TABLE stock_request (
 	  id INT PRIMARY KEY,
-	  employee_id INT,
+	  stock_id INT,
 	  start_date DATE,
 	  end_date DATE,
 	  status VARCHAR(20),
-	  FOREIGN KEY (employee_id) REFERENCES employees(id)
+	  FOREIGN KEY (stock_id) REFERENCES stocks(id)
 	);
 
     --insert into employees (id ,username,password, department_requesting, stock_request_date ,department_code ,purpose_of_issue ,stock_date ,item_no ,item_reference_no ,
 	--item_description ,date_of_previous_issue ,previous_issue_quantity,quantity_requested ,department_initiated_by,department_authorised_by ,
 	--department_confirmed_by,department_received_by,designated_person_approval_name ,signature ,date_of_confirmation ,role)
-	--values (1,'employee', 'employee','Kunal', '2023-11-17 10:34:23.55', 1,'Test Employee' ,'2023-11-17 10:34:23.55',11 ,'12','Kunal Test Employee', '2023-11-17 10:34:23.55',
+	--values (1,'stocks', 'stocks','Kunal', '2023-11-17 10:34:23.55', 1,'Test Stocks' ,'2023-11-17 10:34:23.55',11 ,'12','Kunal Test Stocks', '2023-11-17 10:34:23.55',
 	--98,99 ,'EMPLOYEE','MANAGER' ,'ADMIN','HRMS','Kumar Kunal' ,'KKKKKK' ,'2023-11-17 10:34:23.55' ,'ROLE_EMPLOYEE');
 
 	--insert into employees (id ,username, password,department_requesting, stock_request_date ,department_code ,purpose_of_issue ,stock_date ,item_no ,item_reference_no ,

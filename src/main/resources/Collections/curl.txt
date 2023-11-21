@@ -30,7 +30,7 @@ curl --location 'http://localhost:8080/api/stock-requests/1' \
 --header 'Content-Type: application/json' \
 --data '{
     "Date": "",
-    "employee": {
+    "stocks": {
         "dateOfConfirmation": "",
         "dateOfPreviousIssue": "",
         "departmentAuthorisedBy": "",

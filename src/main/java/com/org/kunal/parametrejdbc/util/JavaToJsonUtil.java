@@ -11,15 +11,15 @@ import com.github.victools.jsonschema.generator.OptionPreset;
 import com.github.victools.jsonschema.generator.SchemaGenerator;
 import com.github.victools.jsonschema.generator.SchemaGeneratorConfig;
 import com.github.victools.jsonschema.generator.SchemaVersion;
-import com.org.kunal.parametrejdbc.purchaserequest.PurchaseRequestEntity;
-import com.org.kunal.parametrejdbc.stockitem.LeaveRequest;
-import com.org.kunal.parametrejdbc.stockitemnew.Employee;
+import com.org.kunal.parametrejdbc.stockitemnew.Stocks;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Kumar.Kunal
  * parametrejdbc
  * 2023
 */
+@Slf4j
 public class JavaToJsonUtil {
 	
 	public static void main(String[] args) {
@@ -28,8 +28,8 @@ public class JavaToJsonUtil {
         SchemaGeneratorConfig schemaGeneratorConfig = schemaGeneratorConfigBuilder.build();
         SchemaGenerator schemaGenerator = new SchemaGenerator(schemaGeneratorConfig);
 
-        //JsonNode jsonSchema = schemaGenerator.generateSchema(LeaveRequest.class);
-        JsonNode jsonSchema = schemaGenerator.generateSchema(Employee.class);
+        //JsonNode jsonSchema = schemaGenerator.generateSchema(StockRequest.class);
+        JsonNode jsonSchema = schemaGenerator.generateSchema(Stocks.class);
         System.out.println(jsonSchema.toPrettyString());
     }
 

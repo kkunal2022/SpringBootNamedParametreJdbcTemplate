@@ -5,12 +5,7 @@
  */
 package com.org.kunal.parametrejdbc.stockitemnew;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,8 +18,12 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+
 /**
- * kunal SpringBootNamedParametreJdbcTemplate 2023
+ * Kumar.Kunal
+ * SpringBootNamedParameterJdbcTemplate
+ * 2023
  */
 @Data
 @Builder
@@ -35,11 +34,11 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @EqualsAndHashCode(callSuper = false)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LeaveRequest {
+public class StockRequest {
 
 	@Id
 	private int id;
-	private Employee employee;
+	private Stocks stocks;
 	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
 	private LocalDate startDate;
 	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)

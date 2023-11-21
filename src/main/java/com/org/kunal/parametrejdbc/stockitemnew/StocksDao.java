@@ -8,18 +8,20 @@ package com.org.kunal.parametrejdbc.stockitemnew;
 import java.util.List;
 
 /**
- * kunal SpringBootNamedParametreJdbcTemplate 2023
+ * Kumar.Kunal
+ * SpringBootNamedParameterJdbcTemplate
+ * 2023
  */
-public interface EmployeeDao {
+public interface StocksDao {
 
-	void save(Employee employee);
+	void save(Stocks stocks);
 
-	void update(Employee employee);
+	void update(Stocks stocks);
 
 	void delete(int id);
 
-	Employee getById(int id);
+	Stocks getById(int id);
 
-	List<Employee> getAll();
+	List<Stocks> getAll();
 
 }

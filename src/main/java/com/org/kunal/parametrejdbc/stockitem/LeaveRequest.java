@@ -45,7 +45,7 @@ public class LeaveRequest {
 	
 	//@ManyToOne
     //@JoinColumn(name = "employee_id")
-	//private Employee employee;
+	//private Stocks stocks;
 	
 	private String reason;
 	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)

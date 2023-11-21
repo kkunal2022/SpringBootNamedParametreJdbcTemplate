@@ -5,14 +5,7 @@
  */
 package com.org.kunal.parametrejdbc.stockitemnew;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.data.annotation.Id;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.org.kunal.parametrejdbc.stockitemnew.LeaveRequest;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +16,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.Id;
+
+import java.util.Date;
+import java.util.List;
 
 /**
- * kunal SpringBootNamedParametreJdbcTemplate 2023
+ * Kumar.Kunal
+ * SpringBootNamedParameterJdbcTemplate
+ * 2023
  */
 @Data
 @Builder
@@ -36,7 +35,7 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @EqualsAndHashCode(callSuper = false)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Employee {
+public class Stocks {
 
 	@Id
 	private int id;
@@ -67,6 +66,6 @@ public class Employee {
     private Date dateOfConfirmation;
     private String role;
 
-	private List<LeaveRequest> leaveRequests;
+	private List<StockRequest> stockRequests;
 
 }
