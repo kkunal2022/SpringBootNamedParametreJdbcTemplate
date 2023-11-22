@@ -14,6 +14,13 @@
       FOREIGN KEY (`user_name`) REFERENCES `users` (`user_name`)
     );
 
+    --INSERT INTO `users` (`user_name`, `user_pass`, `enable`) VALUES
+	--('admin', '$2a$10$okLy2UqGmzjecYK.8zzOrOlYv7fd6/wx7/.MwanKyn9RupY7SCtum', 1);
+
+	--INSERT INTO `user_role` (`user_name`, `user_role`) VALUES
+	--('admin', 'ROLE_USER'),
+	--('admin', 'ROLE_ADMIN');
+
 	DROP TABLE IF EXISTS PURCHASEREQUESTNEW;
 	CREATE TABLE PURCHASEREQUESTNEW (
 	  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
