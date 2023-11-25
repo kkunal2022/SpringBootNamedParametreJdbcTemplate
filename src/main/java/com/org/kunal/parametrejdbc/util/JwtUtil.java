@@ -7,6 +7,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -18,9 +20,11 @@ import java.util.stream.Collectors;
 
 /**
  * @author kunal
- * @project SpringBootNamedParametreJdbcTemplate
+ * @project SpringBootNamedParameterJdbcTemplate
  */
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class JwtUtil {
 
     public UsersVo getUser(final String token) {
@@ -36,25 +40,26 @@ public class JwtUtil {
 
             return user;
         } catch (Exception e) {
-            System.out.println(e.getMessage() + " => " + e);
+            log.error("Exception in getting JWT Token for User ----" , e.getMessage() + " => " + e);
         }
         return null;
     }
 
-    public String generateToken(UsersVo u) {
-        Claims claims = Jwts.claims().setSubject(u.getUsername());
-        claims.put("roles", u.getRoles());
+    public String generateToken(UsersVo generateTokenForUser) {
+        Claims jwtClaims = Jwts.claims().setSubject(generateTokenForUser.getUsername());
+        jwtClaims.put("roles", generateTokenForUser.getRoles());
         long nowMillis = System.currentTimeMillis();
-        long expMillis = nowMillis + 180000;
-        Date exp = new Date(expMillis);
-        return Jwts.builder().setClaims(claims).setIssuedAt(new Date(nowMillis)).setExpiration(exp)
+        long expiryInMilliSecond = nowMillis + 180000;
+        Date expiryDate = new Date(expiryInMilliSecond);
+        return Jwts.builder().setClaims(jwtClaims).setIssuedAt(new Date(nowMillis)).setExpiration(expiryDate)
                 .signWith(key(), SignatureAlgorithm.HS256).compact();
     }
 
     public boolean validateToken(final String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(token);
-        } catch (SignatureException ex) {
+        } catch (SignatureException signatureException) {
+            log.error("Error in validating token ---- '{}'" , signatureException);
             return false;
         }
 
@@ -62,6 +67,7 @@ public class JwtUtil {
     }
 
     private Key key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode("jwtsecretkeyshouldbelongenoughatleast256bits"));
+        byte[] keyBytes = Decoders.BASE64.decode("404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970");
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author kunal
- * @project SpringBootNamedParametreJdbcTemplate
+ * @project SpringBootNamedParameterJdbcTemplate
  */
 @RestController
 @RequiredArgsConstructor
@@ -46,9 +46,9 @@ public class UsersRestController {
 
         if (userByUsername == null) {
             userAuthService.saveUser(userVo);
-            return new ResponseEntity<String>("User successfully registered", HttpStatus.OK);
+            return new ResponseEntity<>("User successfully registered", HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>("User already exists", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
         }
     }
 
@@ -64,12 +64,12 @@ public class UsersRestController {
         }
         UserDetails userDetails = userAuthService.loadUserByUsername(jwtRequest.getUsername());
         String username = userDetails.getUsername();
-        String userpwd = userDetails.getPassword();
-        Set<String> roles = userDetails.getAuthorities().stream().map(r -> r.getAuthority())
+        String userPassword = userDetails.getPassword();
+        Set<String> roles = userDetails.getAuthorities().stream().map(k -> k.getAuthority())
                 .collect(Collectors.toSet());
         UsersVo user = new UsersVo();
         user.setUsername(username);
-        user.setUserpwd(userpwd);
+        user.setUserpwd(userPassword);
         user.setRoles(roles);
         String token = jwtUtil.generateToken(user);
         return new ResponseEntity<>(new JwtResponse(token), HttpStatus.OK);

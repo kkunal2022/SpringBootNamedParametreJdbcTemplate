@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,9 +17,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
 /**
  * @author kunal
- * @project SpringBootNamedParametreJdbcTemplate
+ * @project SpringBootNamedParameterJdbcTemplate
  */
 @Configuration
 public class ApiSecurityConfig {
@@ -44,15 +45,16 @@ public class ApiSecurityConfig {
         auth.userDetailsService(userAuthService).passwordEncoder(passwordEncoder);
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher(H2_CONSOLE));
-    }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        http.authorizeHttpRequests().requestMatchers(antMatcher(H2_CONSOLE)).permitAll().and()
+                        .csrf(csrf -> csrf.ignoringRequestMatchers(antMatcher(H2_CONSOLE)));
+
+        http.authorizeHttpRequests().requestMatchers(AntPathRequestMatcher.antMatcher(H2_CONSOLE)).permitAll();
+
         http.authorizeHttpRequests(
                 auth -> auth.requestMatchers("/api/users/signup", "/api/users/signin")
                         .permitAll().anyRequest().authenticated());
@@ -61,8 +63,8 @@ public class ApiSecurityConfig {
 
         http.csrf(csrf -> csrf.disable());
         http.csrf(AbstractHttpConfigurer::disable);
-        //http.headers(headers -> headers.frameOptions().disable());
-        //http.headers(headers -> headers.frameOptions().sameOrigin());
+        http.headers(headers -> headers.frameOptions().disable());
+        http.headers(headers -> headers.frameOptions().sameOrigin());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

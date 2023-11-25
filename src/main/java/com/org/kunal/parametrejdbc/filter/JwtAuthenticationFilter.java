@@ -7,8 +7,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,8 @@ import java.io.IOException;
  * @project SpringBootNamedParametreJdbcTemplate
  */
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -32,33 +35,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private UserAuthService userAuthService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain)
             throws ServletException, IOException {
-        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (header == null || !header.startsWith("Bearer")) {
-            filterChain.doFilter(request, response);
+        String requestTokenHeader = httpServletRequest.getHeader("Authorization");
+
+        if (requestTokenHeader == null || !requestTokenHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
-        final String token = header.split(" ")[1].trim();// header.substring(7);
+        final String token = requestTokenHeader.split(" ")[1].trim();
+        log.info("Token value ---- " + token);
 
         if (!jwtUtil.validateToken(token)) {
-            filterChain.doFilter(request, response);
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
-        UsersVo userVo = jwtUtil.getUser(token);
+        UsersVo user = jwtUtil.getUser(token);
+        log.info("Token value from JWT Util class ---- '{}'", user);
 
-        UserDetails userDetails = userAuthService.loadUserByUsername(userVo.getUsername());
+        UserDetails userDetails = userAuthService.loadUserByUsername(user.getUsername());
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
 
-        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
 
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

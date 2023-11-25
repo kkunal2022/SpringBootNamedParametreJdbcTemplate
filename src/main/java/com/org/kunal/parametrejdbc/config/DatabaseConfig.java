@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 
 /**
  * @author kunal
- * @project SpringBootNamedParametreJdbcTemplate
+ * @project SpringBootNamedParameterJdbcTemplate
  */
 @Configuration
 public class DatabaseConfig {

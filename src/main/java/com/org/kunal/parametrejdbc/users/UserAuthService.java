@@ -34,8 +34,8 @@ public class UserAuthService implements UserDetailsService {
             throw new UsernameNotFoundException("Users '" + username + "' not found.");
         }
         List<Role> roles = userDao.getRoles(username);
-        List<GrantedAuthority> grantedAuthorities = roles.stream().map(r -> {
-            return new SimpleGrantedAuthority(r.getRole());
+        List<GrantedAuthority> grantedAuthorities = roles.stream().map(k -> {
+            return new SimpleGrantedAuthority(k.getRole());
         }).collect(Collectors.toList());
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getUserpwd(),
                 grantedAuthorities);
@@ -46,11 +46,11 @@ public class UserAuthService implements UserDetailsService {
 
         if (user != null) {
             List<Role> roles = userDao.getRoles(username);
-            Set<String> rls = roles.stream().map(a -> a.getRole()).collect(Collectors.toSet());
+            Set<String> setRoles = roles.stream().map(a -> a.getRole()).collect(Collectors.toSet());
             UsersVo userVo = new UsersVo();
             userVo.setUsername(user.getUsername());
             userVo.setUserpwd(user.getUserpwd());
-            userVo.setRoles(rls);
+            userVo.setRoles(setRoles);
             return userVo;
         }
 
@@ -58,10 +58,10 @@ public class UserAuthService implements UserDetailsService {
     }
 
     public void saveUser(UsersVo userVo) {
-        UserRole user = new UserRole();
-        user.setUsername(userVo.getUsername());
-        user.setUserpwd(passwordEncoder.encode(userVo.getUserpwd()));
-        user.setRoles(userVo.getRoles());
-        userDao.saveUser(user);
+        UserRole saveUserWithRole = new UserRole();
+        saveUserWithRole.setUsername(userVo.getUsername());
+        saveUserWithRole.setUserpwd(passwordEncoder.encode(userVo.getUserpwd()));
+        saveUserWithRole.setRoles(userVo.getRoles());
+        userDao.saveUser(saveUserWithRole);
     }
 }
