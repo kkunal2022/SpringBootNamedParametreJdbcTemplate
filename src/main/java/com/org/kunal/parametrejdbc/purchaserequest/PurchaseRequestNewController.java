@@ -3,13 +3,11 @@
  */
 package com.org.kunal.parametrejdbc.purchaserequest;
 
-import java.io.IOException;
-import java.util.List;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +20,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.org.kunal.parametrejdbc.purchaserequest.PurchaseRequestDto;
-import com.org.kunal.parametrejdbc.purchaserequest.PurchaseRequestDtoId;
-import com.org.kunal.parametrejdbc.purchaserequest.PurchaseResponseDto;
-import com.org.kunal.parametrejdbc.purchaserequest.ResponseDto;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Kumar.Kunal
@@ -103,14 +96,5 @@ public class PurchaseRequestNewController {
 		log.info("DELETE - /purchase request -> response none");
 		return deleteResponse;
 	}
-
-	/*
-	 * @PostMapping public ResponseEntity<AgreementCreationResponse>
-	 * createAgreement(@RequestBody String userEmail) { try {
-	 * AgreementCreationResponse agreement =
-	 * signatureService.createAgreement(userEmail); return
-	 * ResponseEntity.ok(agreement); } catch (ApiException e) { return
-	 * ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); } }
-	 */
 
 }

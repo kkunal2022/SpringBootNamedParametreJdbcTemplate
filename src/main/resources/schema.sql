@@ -35,8 +35,7 @@
 	  email_address varchar(255), 
 	  name varchar(255), 
 	  type varchar(255), 
-	  profile_image BLOB, 
-	  primary key(id)
+	  profile_image BLOB
 	);
 
 	-- Stock Requisition Tables Creation with Foreign Relations & Normalization Starts Here
@@ -65,12 +64,14 @@
         date_of_confirmation DATETIME DEFAULT NULL,
         role VARCHAR(20)
 	);
-    
+
+    DROP TABLE IF EXISTS stock_request;
     CREATE TABLE stock_request (
-	  id INT PRIMARY KEY,
-	  stock_id INT,
+	  id BIGINT PRIMARY KEY,
+	  stock_id BIGINT,
 	  start_date DATE,
 	  end_date DATE,
 	  status VARCHAR(20),
-	  FOREIGN KEY (stock_id) REFERENCES stocks(id)
+	  -- FOREIGN KEY (stock_id) REFERENCES stocks(id) // this is for H2 database
+	  CONSTRAINT FOREIGN KEY (stock_id) REFERENCES stocks(id)
 	);
