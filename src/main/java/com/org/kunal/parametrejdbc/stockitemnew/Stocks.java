@@ -45,7 +45,7 @@ public class Stocks {
     private String departmentRequesting;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private Date stockRequestDate;
-    private Integer departmentCode;
+    private String departmentCode;
     private String purposeOfIssue;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private Date stockDate;

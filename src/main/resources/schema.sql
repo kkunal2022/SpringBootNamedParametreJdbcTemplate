@@ -46,7 +46,7 @@
         password VARCHAR(100),
         department_requesting VARCHAR(100) DEFAULT NULL,
         stock_request_date DATETIME DEFAULT NULL,
-        department_code int DEFAULT NULL,
+        department_code VARCHAR(40) DEFAULT NULL,
         purpose_of_issue VARCHAR(200) DEFAULT NULL,
         stock_date DATETIME DEFAULT NULL,
         item_no int DEFAULT NULL,
@@ -66,12 +66,14 @@
 	);
 
     DROP TABLE IF EXISTS stock_request;
-    CREATE TABLE stock_request (
+    CREATE TABLE stock_request(
 	  id BIGINT PRIMARY KEY,
+	  -- id INT PRIMARY KEY,
 	  stock_id BIGINT,
 	  start_date DATE,
 	  end_date DATE,
 	  status VARCHAR(20),
-	  -- FOREIGN KEY (stock_id) REFERENCES stocks(id) // this is for H2 database
+	  department_code VARCHAR(40) DEFAULT NULL,
+	  -- FOREIGN KEY (stock_id) REFERENCES stocks(id)
 	  CONSTRAINT FOREIGN KEY (stock_id) REFERENCES stocks(id)
 	);

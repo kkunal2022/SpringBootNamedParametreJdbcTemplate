@@ -44,5 +44,5 @@ public class StockRequest {
 	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
 	private LocalDate endDate;
 	private String status;
-
+	private String departmentCode;
 }

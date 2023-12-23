@@ -26,7 +26,7 @@ public class StockRequestRowMapper implements RowMapper<StockRequest> {
 		stockRequest.setStartDate(resultSet.getDate("start_date").toLocalDate());
 		stockRequest.setEndDate(resultSet.getDate("end_date").toLocalDate());
 		stockRequest.setStatus(resultSet.getString("status"));
+		stockRequest.setDepartmentCode(resultSet.getString("department_code"));
 		return stockRequest;
 	}
-
 }

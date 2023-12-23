@@ -28,7 +28,7 @@ public class StocksRowMapper implements RowMapper<Stocks> {
 		stocks.setPassword(resultSet.getString("password"));
 		stocks.setDepartmentRequesting(resultSet.getString("department_requesting"));
 		stocks.setStockRequestDate(resultSet.getDate("stock_request_date"));
-		stocks.setDepartmentCode(resultSet.getInt("department_code"));
+		stocks.setDepartmentCode(resultSet.getString("department_code"));
 		stocks.setPurposeOfIssue(resultSet.getString("purpose_of_issue"));
 		stocks.setStockDate(resultSet.getDate("stock_date"));
 		stocks.setItemNo(resultSet.getInt("item_no"));
@@ -50,5 +50,4 @@ public class StocksRowMapper implements RowMapper<Stocks> {
 		
 		return stocks;
 	}
-
 }
