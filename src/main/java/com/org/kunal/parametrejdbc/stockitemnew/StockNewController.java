@@ -31,38 +31,42 @@ import java.util.List;
 @Slf4j
 public class StockNewController {
 
-	private StocksNewService stocksNewService;
+    private StocksNewService stocksNewService;
 
-	@Autowired
-	public StockNewController(StocksNewService stocksNewService) {
-		this.stocksNewService = stocksNewService;
-	}
+    @Autowired
+    public StockNewController(StocksNewService stocksNewService) {
+        this.stocksNewService = stocksNewService;
+    }
 
-	@PostMapping(value = "/stocks", consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE)
-	public void saveStock(@RequestBody Stocks stocks) {
-		log.info("saveStock controller ---- '{}'" , stocks);
-		stocksNewService.saveStock(stocks);
-	}
+    @PostMapping(value = "/stocks", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void saveStock(@RequestBody Stocks stocks) {
+        if (stocks != null) {
+            log.info("saveStock controller ---- '{}'", stocks);
+            stocksNewService.saveStock(stocks);
+        }else {
+            log.error("Invalid request: stocks object is null");
+        }
+    }
 
-	@PutMapping(value = "/stocks/{id}", consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE)
-	public void updateStock(@PathVariable int id, @RequestBody Stocks stocks) {
-		stocks.setId(id);
-		stocksNewService.updateStock(stocks);
-	}
+    @PutMapping(value = "/stocks/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void updateStock(@PathVariable int id, @RequestBody Stocks stocks) {
+        stocks.setId(id);
+        stocksNewService.updateStock(stocks);
+    }
 
-	@DeleteMapping("/stocks/{id}")
-	public void deleteStock(@PathVariable int id) {
-		stocksNewService.deleteStock(id);
-	}
+    @DeleteMapping("/stocks/{id}")
+    public void deleteStock(@PathVariable int id) {
+        stocksNewService.deleteStock(id);
+    }
 
-	@GetMapping("/stocks/{id}")
-	public Stocks getStockById(@PathVariable int id) {
-		return stocksNewService.getStockById(id);
-	}
+    @GetMapping("/stocks/{id}")
+    public Stocks getStockById(@PathVariable int id) {
+        return stocksNewService.getStockById(id);
+    }
 
-	@GetMapping("/stocks")
-	public List<Stocks> getAllStocks() {
-		return stocksNewService.getAllStocks();
-	}
+    @GetMapping("/stocks")
+    public List<Stocks> getAllStocks() {
+        return stocksNewService.getAllStocks();
+    }
 
 }

@@ -46,7 +46,7 @@
         password VARCHAR(100),
         department_requesting VARCHAR(100) DEFAULT NULL,
         stock_request_date DATETIME DEFAULT NULL,
-        department_code VARCHAR(40) DEFAULT NULL,
+        department_code VARCHAR(40) DEFAULT NULL UNIQUE,
         purpose_of_issue VARCHAR(200) DEFAULT NULL,
         stock_date DATETIME DEFAULT NULL,
         item_no int DEFAULT NULL,

@@ -7,6 +7,8 @@ package com.org.kunal.parametrejdbc.stockitemnew;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -44,6 +46,15 @@ public class StocksDaoImpl implements StocksDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private static final Map<String, String> departmentCodeMap = new HashMap<>();
+
+    @Value("${spring.datasource.url}")
+    private String DB_URL;
+
+    @Value("${spring.datasource.username}")
+    private String DB_USERNAME;
+
+    @Value("${spring.datasource.password}")
+    private String DB_PASSWORD;
 
     @Autowired
     public StocksDaoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -140,8 +151,8 @@ public class StocksDaoImpl implements StocksDao {
 
     private String generateDepartmentCode(String departmentCode) {
         String prefix = getDepartmentCodePrefix(departmentCode);
-        String sequenceNumber = getSequenceNumber(departmentCode);
-        return prefix + sequenceNumber;
+        String generatedNumbers = generateUniqueNumbers();
+        return prefix + generatedNumbers;
     }
 
     private String getDepartmentCodePrefix(String departmentCode) {
@@ -152,12 +163,56 @@ public class StocksDaoImpl implements StocksDao {
         return departmentCode;
     }
 
-    private String getSequenceNumber(String departmentCode) {
-        int departmentCodeHyphenIndex = departmentCode.indexOf("-");
-        if (departmentCodeHyphenIndex != -1) {
-            return departmentCode.substring(departmentCodeHyphenIndex);
+    private String generateUniqueNumbers() {
+        int minNumber = 100;
+        int maxNumber = 999;
+        String generatedNumbers;
+        boolean isUnique = false;
+
+        while (!isUnique) {
+            int generatedNumber = (int) (Math.random() * (maxNumber - minNumber + 1) + minNumber);
+            generatedNumbers = String.format("%03d", generatedNumber);
+            if (isDepartmentCodeUnique(generatedNumbers)) {
+                isUnique = true;
+                return generatedNumbers;
+            }
         }
-        return "";
+        return null;
     }
 
+    private boolean isDepartmentCodeUnique(String generatedNumbers) {
+        try {
+            String query = "SELECT COUNT(*) FROM stocks WHERE LOWER(department_code) = LOWER(:departmentCode)";
+            Map<String, Object> params = new HashMap<>();
+            params.put("departmentCode", getDepartmentCodePrefix(generatedNumbers));
+            Integer count = namedParameterJdbcTemplate.queryForObject(query, params, Integer.class);
+            return count != null && count == 0;
+        } catch (DataAccessException e) {
+            log.error("Error while generating unique department code: {}", e.getMessage());
+        }
+
+        return false;
+    }
+
+    /*private boolean isDepartmentCodeUnique(String generatedNumbers) {
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD)) {
+            //String query = "SELECT COUNT(*) FROM stocks WHERE department_code = ?";
+            String query = "SELECT COUNT(*) FROM stocks WHERE LOWER(department_code) = LOWER(?)";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, getDepartmentCodePrefix(generatedNumbers));
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        int count = resultSet.getInt(1);
+                        return count == 0;
+                    }
+                }
+            }
+        } catch (SQLException sqlException) {
+            log.error("Error while generating unique department code with exception - '{}' " +
+                    "and exceptionMessage - '{}'", sqlException, sqlException.getMessage());
+        }
+
+        return false;
+    }*/
 }
