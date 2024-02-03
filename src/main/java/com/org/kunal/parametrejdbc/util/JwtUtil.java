@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,13 +33,15 @@ public class JwtUtil {
             UsersVo user = new UsersVo();
             user.setUsername(body.getSubject());
 
-            Set<String> roles = Collections.unmodifiableSet(Arrays.asList(body.get("roles").toString().split(",")).stream().map(r -> new String(r))
-                    .collect(Collectors.toSet()));
+            Set<String> roles = Arrays.stream(body.get("roles").toString()
+                    .split(",")).map(String::new)
+                    .collect(Collectors.toUnmodifiableSet());
             user.setRoles(roles);
 
             return user;
         } catch (Exception e) {
-            log.error("Exception in getting JWT Token for User ----" , e.getMessage() + " => " + e);
+            log.error("Exception in getting JWT Token for User " +
+                    "with exceptionMessage-- '{}' and exception ----" , e.getMessage() , e);
         }
         return null;
     }
@@ -49,9 +50,11 @@ public class JwtUtil {
         Claims jwtClaims = Jwts.claims().setSubject(generateTokenForUser.getUsername());
         jwtClaims.put("roles", generateTokenForUser.getRoles());
         long nowMillis = System.currentTimeMillis();
-        long expiryInMilliSecond = nowMillis + 180000;
+        long expiryInMilliSecond = nowMillis + 1080000;
         Date expiryDate = new Date(expiryInMilliSecond);
-        return Jwts.builder().setClaims(jwtClaims).setIssuedAt(new Date(nowMillis)).setExpiration(expiryDate)
+        return Jwts.builder()
+                .setClaims(jwtClaims)
+                .setIssuedAt(new Date(nowMillis)).setExpiration(expiryDate)
                 .signWith(key(), SignatureAlgorithm.HS256).compact();
     }
 
@@ -59,7 +62,7 @@ public class JwtUtil {
         try {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(token);
         } catch (SignatureException signatureException) {
-            log.error("Error in validating token ---- '{}'" , signatureException);
+            log.error("Error in validating token ---- '{}'" , signatureException.getMessage());
             return false;
         }
 
@@ -67,7 +70,8 @@ public class JwtUtil {
     }
 
     private Key key() {
-        byte[] keyBytes = Decoders.BASE64.decode("404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970");
+        byte[] keyBytes = Decoders.BASE64
+                .decode("404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970");
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

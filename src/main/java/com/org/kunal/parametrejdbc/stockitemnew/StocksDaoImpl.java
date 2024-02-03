@@ -169,6 +169,7 @@ public class StocksDaoImpl implements StocksDao {
         String generatedNumbers;
         boolean isUnique = false;
 
+        //while (!isUnique) {
         while (!isUnique) {
             int generatedNumber = (int) (Math.random() * (maxNumber - minNumber + 1) + minNumber);
             generatedNumbers = String.format("%03d", generatedNumber);

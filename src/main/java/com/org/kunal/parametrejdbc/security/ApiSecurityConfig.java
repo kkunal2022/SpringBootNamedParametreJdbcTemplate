@@ -41,8 +41,8 @@ public class ApiSecurityConfig {
     private static final String H2_CONSOLE = "/h2-console/**";
 
     @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userAuthService).passwordEncoder(passwordEncoder);
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.userDetailsService(userAuthService).passwordEncoder(passwordEncoder);
     }
 
 

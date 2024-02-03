@@ -20,6 +20,26 @@
 	--('admin', 'ROLE_USER'),
 	--('admin', 'ROLE_ADMIN');
 
+	DROP TABLE IF EXISTS PurchaseRequisition;
+	CREATE TABLE PurchaseRequisition(
+      id INT PRIMARY KEY,
+      date DATE,
+      department_code INT,
+      reason VARCHAR(255),
+      item_number INT,
+      item_description VARCHAR(255),
+      unit_price INT,
+      quantity INT,
+      estimated_value INT,
+      receiver_email VARCHAR(255),
+      signature VARCHAR(255)
+    );
+
+    INSERT INTO `PurchaseRequisition`(`id`, `date`,`department_code`, `reason`,`item_number`, `item_description`,`unit_price`, `quantity`, `estimated_value`,`receiver_email`, `signature`) VALUES
+	(1234, '2024-01-01', 001, 'Requesting supplies', 456, 'Office supplies', 10, 5, 50, 'kkunal2005@test.com', 'abcd1234'),
+	(1235, '2024-02-02', 002, 'Requesting supplies test kunal', 457, 'Office supplies test', 20, 10, 100, 'kkunal2005@test.com', 'abcd1235');
+
+
 	DROP TABLE IF EXISTS PURCHASEREQUESTNEW;
 	CREATE TABLE PURCHASEREQUESTNEW (
 	  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
@@ -77,3 +97,22 @@
 	  -- FOREIGN KEY (stock_id) REFERENCES stocks(id)
 	  CONSTRAINT FOREIGN KEY (stock_id) REFERENCES stocks(id)
 	);
+
+    DROP TABLE IF EXISTS PurchaseRequisition;
+	CREATE TABLE PurchaseRequisition(
+      id INT PRIMARY KEY,
+      date DATE,
+      departmentCode INT,
+      reason VARCHAR(255),
+      itemNumber INT,
+      itemDescription VARCHAR(255),
+      unitPrice INT,
+      quantity INT,
+      estimatedValue INT,
+      receiverEmail VARCHAR(255),
+      signature VARCHAR(255)
+    );
+
+    INSERT INTO `PurchaseRequisition`(`id`, `date`,`departmentCode`, `reason`,`itemNumber`, `itemDescription`,`unitPrice`, `quantity`, `estimatedValue`,`receiverEmail`, `signature`) VALUES
+	(1234, '2024-01-01', 123, 'Requesting supplies', 456, 'Office supplies', 10, 5, 50, 'kkunal2005@test.com', 'abcd1234'),
+	(1235, '2024-02-02', 124, 'Requesting supplies test kunal', 457, 'Office supplies test', 20, 10, 100, 'kkunal2005@test.com', 'abcd1235');
