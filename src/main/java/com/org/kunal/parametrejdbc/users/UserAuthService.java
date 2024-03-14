@@ -41,11 +41,11 @@ public class UserAuthService implements UserDetailsService {
                 grantedAuthorities);
     }
 
-    public UsersVo getUserByUsername(String username) {
-        Users user = userDao.getUser(username);
+    public UsersVo getUserByUsername(String email) {
+        Users user = userDao.getUser(email);
 
         if (user != null) {
-            List<Role> roles = userDao.getRoles(username);
+            List<Role> roles = userDao.getRoles(email);
             Set<String> setRoles = roles.stream().map(a -> a.getRole()).collect(Collectors.toSet());
             UsersVo userVo = new UsersVo();
             userVo.setEmail(user.getEmail());

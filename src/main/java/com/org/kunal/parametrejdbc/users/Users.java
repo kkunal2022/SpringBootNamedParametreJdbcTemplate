@@ -2,6 +2,7 @@ package com.org.kunal.parametrejdbc.users;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -29,13 +30,14 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Users {
 
+	@Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    @NotEmpty(message = "Email cannot be empty")
     @NotBlank(message = "Email cannot be blank")
     @NotNull(message = "Email Cannot Be Null")
-    @Email(message = "Email Should Be Valid")
     private String email;
 
-    @NotBlank(message = "Password cannot be blank")
-    @Size(min = 8, max = 12, message = "Password must be between 8 and 12 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Password must be alphanumeric without whitespaces or tabs")
+	@NotBlank(message = "Password cannot be blank")
+    @Size(min = 4, max = 12, message = "Password must be between 8 and 12 characters")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,12}$", message = "Password must be alphanumeric without whitespaces or tabs")
     private String userpwd;
 }

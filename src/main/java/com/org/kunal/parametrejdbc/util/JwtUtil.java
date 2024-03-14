@@ -33,8 +33,8 @@ public class JwtUtil {
             UsersVo user = new UsersVo();
             user.setEmail(body.getSubject());
 
-            // Extract username from claims
-            user.setEmail((String) body.get("username"));
+            // Extract email from claims
+            user.setEmail((String) body.get("email"));
 
             Set<String> roles = Arrays.stream(body.get("roles").toString()
                             .split(",")).map(String::new)
@@ -51,7 +51,7 @@ public class JwtUtil {
 
     public String generateToken(UsersVo generateTokenForUser) {
         Claims jwtClaims = Jwts.claims().setSubject(generateTokenForUser.getEmail());
-        jwtClaims.put("username", generateTokenForUser.getEmail()); // Add username to claims
+        jwtClaims.put("email", generateTokenForUser.getEmail()); // Add email to claims
         jwtClaims.put("roles", generateTokenForUser.getRoles());
         long nowMillis = System.currentTimeMillis();
         long expiryInMilliSecond = nowMillis + 1080000;
