@@ -26,7 +26,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRole {
 
-    private String username;
+    private String email;
     private String userpwd;
     private Set<String> roles;
 }

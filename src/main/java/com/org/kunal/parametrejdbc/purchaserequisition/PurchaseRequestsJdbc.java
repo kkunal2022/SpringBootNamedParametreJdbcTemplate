@@ -282,7 +282,6 @@ public class PurchaseRequestsJdbc implements PurchaseRequestsRepository<Purchase
 
         return false;
     }
-
     @Override
     public List<PurchaseRequisition> getAllProducts() {
         log.info("Fetching Purchase Request All Details from DB with ID ");

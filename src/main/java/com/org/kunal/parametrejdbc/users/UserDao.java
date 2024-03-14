@@ -33,7 +33,7 @@ public class UserDao {
 
 
     public Users getUser(String username) {
-        List<Users> users = jdbcTemplate.query("select user_name, user_pass from users where user_name = ?",
+        List<Users> users = jdbcTemplate.query("select email, user_pass from users where email = ?",
                 new UserRowMapper(), new Object[] { username });
 
         if (users.isEmpty()) {
@@ -43,9 +43,9 @@ public class UserDao {
         return users.get(0);
     }
 
-    public List<Role> getRoles(String username) {
+    public List<Role> getRoles(String email) {
         List<Map<String, Object>> getRolesJdbcResults = jdbcTemplate
-                .queryForList("select user_role from user_role where user_name = ?", new Object[] { username });
+                .queryForList("select user_role from user_role where email = ?", new Object[] { email });
 
         return getRolesJdbcResults.stream().map(kunal -> {
             Role role = new Role();
@@ -56,15 +56,15 @@ public class UserDao {
     }
 
     public void saveUser(UserRole saveUserWithRole) {
-        jdbcTemplate.update("insert into users(user_name, user_pass) values(?, ?)",
-                new Object[] { saveUserWithRole.getUsername(), saveUserWithRole.getUserpwd() });
+        jdbcTemplate.update("insert into users(email, user_pass) values(?, ?)",
+                new Object[] { saveUserWithRole.getEmail(), saveUserWithRole.getUserpwd() });
 
         saveUserWithRole.getRoles().forEach(kunal -> jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "insert into user_role(user_name, user_role) values(?, ?)",
-                        new String[] { "user_name", "user_role" });
-                preparedStatement.setString(1, saveUserWithRole.getUsername());
+                        "insert into user_role(email, user_role) values(?, ?)",
+                        new String[] { "email", "user_role" });
+                preparedStatement.setString(1, saveUserWithRole.getEmail());
                 preparedStatement.setString(2, kunal);
                 return preparedStatement;
             }

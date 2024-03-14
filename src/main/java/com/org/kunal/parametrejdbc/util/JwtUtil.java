@@ -31,10 +31,13 @@ public class JwtUtil {
             Claims body = Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token).getBody();
 
             UsersVo user = new UsersVo();
-            user.setUsername(body.getSubject());
+            user.setEmail(body.getSubject());
+
+            // Extract username from claims
+            user.setEmail((String) body.get("username"));
 
             Set<String> roles = Arrays.stream(body.get("roles").toString()
-                    .split(",")).map(String::new)
+                            .split(",")).map(String::new)
                     .collect(Collectors.toUnmodifiableSet());
             user.setRoles(roles);
 
@@ -47,7 +50,8 @@ public class JwtUtil {
     }
 
     public String generateToken(UsersVo generateTokenForUser) {
-        Claims jwtClaims = Jwts.claims().setSubject(generateTokenForUser.getUsername());
+        Claims jwtClaims = Jwts.claims().setSubject(generateTokenForUser.getEmail());
+        jwtClaims.put("username", generateTokenForUser.getEmail()); // Add username to claims
         jwtClaims.put("roles", generateTokenForUser.getRoles());
         long nowMillis = System.currentTimeMillis();
         long expiryInMilliSecond = nowMillis + 1080000;

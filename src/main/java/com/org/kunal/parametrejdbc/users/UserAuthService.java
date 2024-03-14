@@ -28,16 +28,16 @@ public class UserAuthService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users user = userDao.getUser(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Users user = userDao.getUser(email);
         if (user == null) {
-            throw new UsernameNotFoundException("Users '" + username + "' not found.");
+            throw new UsernameNotFoundException("Users '" + email + "' not found.");
         }
-        List<Role> roles = userDao.getRoles(username);
+        List<Role> roles = userDao.getRoles(email);
         List<GrantedAuthority> grantedAuthorities = roles.stream().map(k -> {
             return new SimpleGrantedAuthority(k.getRole());
         }).collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getUserpwd(),
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getUserpwd(),
                 grantedAuthorities);
     }
 
@@ -48,7 +48,7 @@ public class UserAuthService implements UserDetailsService {
             List<Role> roles = userDao.getRoles(username);
             Set<String> setRoles = roles.stream().map(a -> a.getRole()).collect(Collectors.toSet());
             UsersVo userVo = new UsersVo();
-            userVo.setUsername(user.getUsername());
+            userVo.setEmail(user.getEmail());
             userVo.setUserpwd(user.getUserpwd());
             userVo.setRoles(setRoles);
             return userVo;
@@ -59,7 +59,7 @@ public class UserAuthService implements UserDetailsService {
 
     public void saveUser(UsersVo userVo) {
         UserRole saveUserWithRole = new UserRole();
-        saveUserWithRole.setUsername(userVo.getUsername());
+        saveUserWithRole.setEmail(userVo.getEmail());
         saveUserWithRole.setUserpwd(passwordEncoder.encode(userVo.getUserpwd()));
         saveUserWithRole.setRoles(userVo.getRoles());
         userDao.saveUser(saveUserWithRole);

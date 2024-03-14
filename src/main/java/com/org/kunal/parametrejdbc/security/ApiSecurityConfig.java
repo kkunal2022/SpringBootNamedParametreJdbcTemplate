@@ -25,7 +25,6 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
  */
 @Configuration
 public class ApiSecurityConfig {
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -44,7 +43,6 @@ public class ApiSecurityConfig {
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(userAuthService).passwordEncoder(passwordEncoder);
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -67,7 +65,6 @@ public class ApiSecurityConfig {
         http.headers(headers -> headers.frameOptions().sameOrigin());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 

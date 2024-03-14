@@ -42,7 +42,12 @@ public class UsersRestController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody UsersVo userVo) {
-        UsersVo userByUsername = userAuthService.getUserByUsername(userVo.getUsername());
+        if (userVo.getEmail() == null || userVo.getEmail().trim().isEmpty() ||
+                userVo.getUserpwd() == null || userVo.getUserpwd().trim().isEmpty()) {
+            return new ResponseEntity<>("Email or Password must not be empty",
+                    HttpStatus.BAD_REQUEST);
+        }
+        UsersVo userByUsername = userAuthService.getUserByUsername(userVo.getEmail());
 
         if (userByUsername == null) {
             userAuthService.saveUser(userVo);
@@ -54,21 +59,22 @@ public class UsersRestController {
 
     @PostMapping("/signin")
     public ResponseEntity<JwtResponse> generateJwtToken(@RequestBody JwtRequest jwtRequest) {
+
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getUserpwd()));
-        } catch (DisabledException e) {
+                    new UsernamePasswordAuthenticationToken(jwtRequest.getEmail(), jwtRequest.getUserpwd()));
+        } catch (DisabledException disabledException) {
             throw new DisabledUserException("User Inactive");
-        } catch (BadCredentialsException e) {
+        } catch (BadCredentialsException badCredentialsException) {
             throw new InvalidUserCredentialsException("Invalid Credentials");
         }
-        UserDetails userDetails = userAuthService.loadUserByUsername(jwtRequest.getUsername());
-        String username = userDetails.getUsername();
+        UserDetails userDetails = userAuthService.loadUserByUsername(jwtRequest.getEmail());
+        String email = userDetails.getUsername();
         String userPassword = userDetails.getPassword();
         Set<String> roles = userDetails.getAuthorities().stream().map(k -> k.getAuthority())
                 .collect(Collectors.toSet());
         UsersVo user = new UsersVo();
-        user.setUsername(username);
+        user.setEmail(email);
         user.setUserpwd(userPassword);
         user.setRoles(roles);
         String token = jwtUtil.generateToken(user);

@@ -1,22 +1,22 @@
 	DROP TABLE IF EXISTS `users`;
     CREATE TABLE `users` (
-      `user_name` varchar(30) NOT NULL,
+      `email` varchar(30) NOT NULL,
       `user_pass` varchar(255) NOT NULL,
-      -- `enable` tinyint(1) NOT NULL DEFAULT '1',
+      --`enable` tinyint(1) NOT NULL DEFAULT '1',
       enable TINYINT NOT NULL DEFAULT 1,
-      PRIMARY KEY (`user_name`)
+      PRIMARY KEY (`email`)
     );
 
     DROP TABLE IF EXISTS `user_role`;
     CREATE TABLE `user_role` (
-      `user_name` varchar(30) NOT NULL,
+      `email` varchar(30) NOT NULL,
       `user_role` varchar(15) NOT NULL,
-      FOREIGN KEY (`user_name`) REFERENCES `users` (`user_name`)
+      FOREIGN KEY (`email`) REFERENCES `users` (`email`)
     );
 
-    --INSERT INTO `users` (`user_name`, `user_pass`, `enable`) VALUES ('admin', '$2a$10$okLy2UqGmzjecYK.8zzOrOlYv7fd6/wx7/.MwanKyn9RupY7SCtum', 1);
+    --INSERT INTO `users` (`email`, `user_pass`, `enable`) VALUES ('admin', '$2a$10$okLy2UqGmzjecYK.8zzOrOlYv7fd6/wx7/.MwanKyn9RupY7SCtum', 1);
 
-	--INSERT INTO `user_role` (`user_name`, `user_role`) VALUES
+	--INSERT INTO `user_role` (`email`, `user_role`) VALUES
 	--('admin', 'ROLE_USER'),
 	--('admin', 'ROLE_ADMIN');
 
@@ -87,15 +87,15 @@
 
     DROP TABLE IF EXISTS stock_request;
     CREATE TABLE stock_request(
-	  id BIGINT PRIMARY KEY,
-	  -- id INT PRIMARY KEY,
+	  --id BIGINT PRIMARY KEY,
+	  id INT PRIMARY KEY,
 	  stock_id BIGINT,
 	  start_date DATE,
 	  end_date DATE,
 	  status VARCHAR(20),
 	  department_code VARCHAR(40) DEFAULT NULL,
-	  -- FOREIGN KEY (stock_id) REFERENCES stocks(id)
-	  CONSTRAINT FOREIGN KEY (stock_id) REFERENCES stocks(id)
+	  FOREIGN KEY (stock_id) REFERENCES stocks(id)
+	  --CONSTRAINT FOREIGN KEY (stock_id) REFERENCES stocks(id)
 	);
 
     DROP TABLE IF EXISTS PurchaseRequisition;

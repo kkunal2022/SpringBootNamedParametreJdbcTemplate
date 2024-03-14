@@ -1,8 +1,10 @@
 package com.org.kunal.parametrejdbc.purchaserequisition;
 
-import com.org.kunal.parametrejdbc.users.UsersVo;
+import com.org.kunal.parametrejdbc.users.JwtRequest;
+import com.org.kunal.parametrejdbc.users.UserAuthService;
 import com.org.kunal.parametrejdbc.util.EmailService;
 import com.org.kunal.parametrejdbc.util.HttpResponse;
+import com.org.kunal.parametrejdbc.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,25 +56,37 @@ public class PurchaseRequisitionResource {
 
     //@Autowired
     //private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserAuthService userAuthService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 //
 
     @GetMapping("/by-user")
-    public ResponseEntity<HttpResponse> getPurchaseRequisitionsByUser(
-            @AuthenticationPrincipal(expression = "principal") UsersVo currentUser) {
-        if (currentUser == null || currentUser.getUsername() == null || currentUser.getUsername().isEmpty()) {
-            return ResponseEntity.badRequest().body(
-                    HttpResponse.builder()
-                            .timeStamp(now().toString())
-                            .message("Invalid user authentication data")
-                            .status(HttpStatus.BAD_REQUEST)
-                            .statusCode(HttpStatus.BAD_REQUEST.value())
-                            .build()
-            );
-        }
-
+    public ResponseEntity<HttpResponse> getPurchaseRequisitionsByUser(@AuthenticationPrincipal JwtRequest currentUser) {
         try {
-            List<PurchaseRequisition> purchaseRequisitions =
-                    purchaseRequisitionService.getPurchaseRequisitionsByUser(currentUser.getUsername());
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(currentUser.getEmail(), currentUser.getUserpwd()));
+            UserDetails userDetails = userAuthService.loadUserByUsername(currentUser.getEmail());
+            String username = userDetails.getUsername();
+            if (username == null || currentUser.getEmail() == null || currentUser.getEmail().isEmpty()) {
+                return ResponseEntity.badRequest().body(
+                        HttpResponse.builder()
+                                .timeStamp(now().toString())
+                                .message("Invalid user authentication data")
+                                .status(HttpStatus.BAD_REQUEST)
+                                .statusCode(HttpStatus.BAD_REQUEST.value())
+                                .build()
+                );
+            }
+
+            List<PurchaseRequisition> purchaseRequisitions = purchaseRequisitionService.getPurchaseRequisitionsByUser(currentUser.getEmail());
+
             return ResponseEntity.ok(
                     HttpResponse.builder()
                             .timeStamp(now().toString())
@@ -79,15 +96,18 @@ public class PurchaseRequisitionResource {
                             .statusCode(HttpStatus.OK.value())
                             .build()
             );
-        } catch (Exception exception) {
-            log.error("Error retrieving purchase requisitions: ", exception);
+        } catch (Exception e) {
+            // Log the exception details for debugging purposes
+            log.error("Error retrieving purchase requisitions: ", e);
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     HttpResponse.builder()
                             .timeStamp(now().toString())
                             .message("An error occurred while retrieving purchase requisitions")
                             .status(HttpStatus.INTERNAL_SERVER_ERROR)
                             .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                            .developerMessage(exception.getMessage())
+                            // Optionally include more details about the error
+                            // .developerMessage(e.getMessage())
                             .build()
             );
         }
